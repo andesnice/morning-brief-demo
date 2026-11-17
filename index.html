@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>晨會恢復效能 — 請長官定三件事</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: "Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif;
+    background:#f4efe6; color:#2b2b2b; line-height:1.7;
+    padding:20px; font-size:17px; overflow-x:clip;
+  }
+  img,div { max-width:100%; }
+  .wrap { max-width:760px; margin:0 auto; }
+  .hero {
+    background:linear-gradient(135deg,#8a1f1f,#b5451d); color:#fff;
+    border-radius:16px; padding:26px 24px; margin-bottom:22px;
+    box-shadow:0 6px 18px rgba(138,31,31,.25);
+  }
+  .hero h1 { font-size:24px; letter-spacing:1px; margin-bottom:10px; }
+  .hero p { font-size:16px; opacity:.95; }
+  .hero .tag { display:inline-block; background:rgba(255,255,255,.2);
+    padding:3px 12px; border-radius:20px; font-size:14px; margin-bottom:12px; }
+
+  .sec-title { font-size:19px; font-weight:bold; color:#8a1f1f;
+    margin:26px 0 14px; padding-left:12px; border-left:5px solid #c9a227; }
+  .note { font-size:15px; color:#6b6b6b; margin:-6px 0 16px; }
+
+  .card {
+    background:#fff; border-radius:14px; padding:20px 22px; margin-bottom:16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06); border:1px solid #ece3d2;
+  }
+  .q-no { display:inline-block; background:#8a1f1f; color:#fff;
+    width:34px; height:34px; border-radius:50%; text-align:center;
+    line-height:34px; font-weight:bold; margin-right:10px; font-size:16px; }
+  .q-title { font-size:18px; font-weight:bold; vertical-align:middle; }
+  .q-why { font-size:15px; color:#777; margin:10px 0 14px; padding-left:44px; }
+  .opts { padding-left:44px; }
+  .opt {
+    display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; padding:10px 14px; margin-bottom:8px;
+    border:1.5px solid #ddd; border-radius:10px; font-size:16px; background:#fafafa;
+  }
+  .opt .box { width:20px; height:20px; border:2px solid #b5451d; border-radius:5px; flex:0 0 auto; }
+  .opt.reco { border-color:#c9a227; background:#fdf8e8; }
+  .opt.reco .tagr { margin-left:auto; background:#c9a227; color:#fff;
+    font-size:13px; padding:2px 10px; border-radius:12px; white-space:nowrap; }
+
+  .mock-title { font-size:19px; font-weight:bold; color:#1f5c8a;
+    margin:30px 0 8px; padding-left:12px; border-left:5px solid #1f5c8a; }
+  .mock {
+    background:#fff; border-radius:14px; padding:18px; border:1px solid #d6e4ef;
+    box-shadow:0 2px 10px rgba(31,92,138,.08);
+  }
+  .mock h3 { font-size:16px; color:#1f5c8a; margin-bottom:4px; }
+  .mock .sub { font-size:14px; color:#888; margin-bottom:12px; }
+  .yuan { font-weight:bold; font-size:15px; margin:12px 0 6px; color:#333;
+    border-bottom:1px dashed #ccc; padding-bottom:4px; }
+  .row { display:flex; align-items:center; flex-wrap:wrap; gap:6px 8px; padding:8px 4px; font-size:15px; border-bottom:1px solid #f2f2f2; }
+  .row .name { flex:0 0 68px; font-weight:600; }
+  .st { font-size:14px; padding:1px 8px; border-radius:10px; flex:0 0 auto; }
+  .ok { background:#e3f4e3; color:#1f7a1f; }
+  .lv { background:#fff4d6; color:#a07400; }
+  .no { background:#fde3e3; color:#b61e1e; }
+  .meta { color:#888; font-size:13px; margin-left:auto; min-width:0; }
+  .legend { font-size:14px; color:#666; margin-top:12px; }
+
+  .foot { font-size:14px; color:#777; margin-top:26px; text-align:center;
+    border-top:1px dashed #ccc; padding-top:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="tag">晨會恢復效能・數位化</span>
+    <h1>晨會要「看得到成果」，先請長官定三件事</h1>
+    <p>我們打算把現在的「每日工作填報」升級，讓晨會當場就能看到：<b>誰交了、誰沒交、各項數字差目標多少</b>。動工前，有三件事只有長官能定——定了才不會做出錯的數字。</p>
+  </div>
+
+  <div class="sec-title">請長官圈選這三題</div>
+  <div class="note">在每題選一個□打勾即可；不確定的可先圈起來，我們再討論。</div>
+
+  <div class="card">
+    <div><span class="q-no">1</span><span class="q-title">月底「500 位」要以哪一種人算？</span></div>
+    <div class="q-why">同一個 500，算法不同，數字差很多。先統一，晨會才不會各報各的、吵不完。</div>
+    <div class="opts">
+      <div class="opt reco"><span class="box"></span>只算「已核實報名」的人<span class="tagr">建議</span></div>
+      <div class="opt"><span class="box"></span>算到「已匯款」就算</div>
+      <div class="opt"><span class="box"></span>算到「已填表」就算</div>
+      <div class="opt"><span class="box"></span>含「口頭表示有意願」的也算</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div><span class="q-no">2</span><span class="q-title">「海上召靈」的報名，是用現有的海洋宗教文化活動報名系統嗎？</span></div>
+    <div class="q-why">如果是，電腦可以自動把「已填表／已匯款／已核實」的人數抓進晨會，修士就不用再手動報一次、也不會重複算。</div>
+    <div class="opts">
+      <div class="opt reco"><span class="box"></span>是，就是那個報名系統<span class="tagr">建議</span></div>
+      <div class="opt"><span class="box"></span>不是，用別的方式收名單（請說明）</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div><span class="q-no">3</span><span class="q-title">「昨日各院收入」要不要也放進這套晨會系統？</span></div>
+    <div class="q-why">收入本來就有流水帳在記。放進工作日誌會變複雜、也容易歸錯院。</div>
+    <div class="opts">
+      <div class="opt reco"><span class="box"></span>不放，晨會頁只放流水帳連結就好<span class="tagr">建議</span></div>
+      <div class="opt"><span class="box"></span>要放，各院每天在系統報一筆收入</div>
+    </div>
+  </div>
+
+  <div class="mock-title">做好以後，晨會長這樣（示意）</div>
+  <div class="mock">
+    <h3>📋 今日晨會一覽 — 11/18（二）</h3>
+    <div class="sub">自動統計：應到 32 人｜已交 26｜休假 3｜<b style="color:#b61e1e">未交 3</b></div>
+
+    <div class="yuan">玄門山（6 人）</div>
+    <div class="row"><span class="name">王○○</span><span class="st ok">✅ 已交</span><span class="meta">召靈 核實2 ・ 無問題</span></div>
+    <div class="row"><span class="name">李○○</span><span class="st ok">✅ 已交</span><span class="meta">召靈 核實1 ・ 需協助</span></div>
+    <div class="row"><span class="name">張○○</span><span class="st lv">🟡 休假</span><span class="meta">休假系統自動帶，不算漏報</span></div>
+    <div class="row"><span class="name">陳○○</span><span class="st no">❌ 未交</span><span class="meta">晨會當場追</span></div>
+
+    <div class="yuan">聖道院（5 人）</div>
+    <div class="row"><span class="name">林○○</span><span class="st ok">✅ 已交</span><span class="meta">召靈 核實3 ・ 無問題</span></div>
+    <div class="row"><span class="name">黃○○</span><span class="st no">❌ 未交</span><span class="meta">晨會當場追</span></div>
+
+    <div class="legend">✅ 已交　🟡 休假（自動，不算漏報）　❌ 未交（要追的人）｜數字會自動加總、算出離目標還差多少。</div>
+  </div>
+
+  <div class="foot">
+    玄門真宗・全職每日工作表　｜　2026-11-17 整理<br>
+    長官定了這三題，技術端就能開始做（修士自己要填什麼、怎麼比對，由我們處理）。
+  </div>
+
+</div>
+</body>
+</html>
