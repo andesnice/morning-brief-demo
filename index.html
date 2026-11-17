@@ -38,13 +38,37 @@
   .q-why { font-size:15px; color:#777; margin:10px 0 14px; padding-left:44px; }
   .opts { padding-left:44px; }
   .opt {
-    display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; padding:10px 14px; margin-bottom:8px;
+    display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; padding:12px 14px; margin-bottom:8px;
     border:1.5px solid #ddd; border-radius:10px; font-size:16px; background:#fafafa;
+    cursor:pointer; user-select:none; transition:border-color .15s, background .15s;
   }
-  .opt .box { width:20px; height:20px; border:2px solid #b5451d; border-radius:5px; flex:0 0 auto; }
+  .opt:hover { border-color:#b5451d; background:#fff; }
+  .opt .box { width:22px; height:22px; border:2px solid #b5451d; border-radius:5px;
+    flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:15px; font-weight:bold; line-height:1; }
+  .opt.sel { border-color:#8a1f1f; background:#fdecec; }
+  .opt.sel .box { background:#8a1f1f; border-color:#8a1f1f; }
   .opt.reco { border-color:#c9a227; background:#fdf8e8; }
-  .opt.reco .tagr { margin-left:auto; background:#c9a227; color:#fff;
+  .opt.reco.sel { border-color:#8a1f1f; background:#fdecec; }
+  .opt .tagr { margin-left:auto; background:#c9a227; color:#fff;
     font-size:13px; padding:2px 10px; border-radius:12px; white-space:nowrap; }
+
+  /* 結果區 */
+  .result { border:2px solid #8a1f1f; }
+  .rrow { font-size:16px; padding:8px 0; border-bottom:1px solid #f2f2f2; }
+  .rrow:last-of-type { border-bottom:0; }
+  .rpick { color:#b61e1e; font-weight:bold; }
+  .rpick.done { color:#1f7a1f; }
+  .copybtn { display:block; width:100%; margin-top:16px; padding:14px;
+    background:#8a1f1f; color:#fff; border:0; border-radius:10px;
+    font-size:17px; font-weight:bold; cursor:pointer; font-family:inherit; }
+  .copybtn:active { background:#6e1818; }
+  .rhint { font-size:13px; color:#888; margin-top:10px; text-align:center; }
+  .toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%);
+    background:#1f7a1f; color:#fff; padding:10px 20px; border-radius:24px;
+    font-size:15px; box-shadow:0 4px 14px rgba(0,0,0,.25); opacity:0;
+    transition:opacity .25s; pointer-events:none; z-index:50; }
+  .toast.show { opacity:1; }
 
   .mock-title { font-size:19px; font-weight:bold; color:#1f5c8a;
     margin:30px 0 8px; padding-left:12px; border-left:5px solid #1f5c8a; }
@@ -79,12 +103,12 @@
   </div>
 
   <div class="sec-title">請長官圈選這三題</div>
-  <div class="note">在每題選一個□打勾即可；不確定的可先圈起來，我們再討論。</div>
+  <div class="note">直接用手指點選項即可（點一下就打勾，同一題只能選一個，點別的會改過去）。圈好後，拉到最下面按「複製結果」傳回承辦。</div>
 
   <div class="card">
     <div><span class="q-no">1</span><span class="q-title">月底「500 位」要以哪一種人算？</span></div>
     <div class="q-why">同一個 500，算法不同，數字差很多。先統一，晨會才不會各報各的、吵不完。</div>
-    <div class="opts">
+    <div class="opts" data-q="500位算法">
       <div class="opt reco"><span class="box"></span>只算「已核實報名」的人<span class="tagr">建議</span></div>
       <div class="opt"><span class="box"></span>算到「已匯款」就算</div>
       <div class="opt"><span class="box"></span>算到「已填表」就算</div>
@@ -95,7 +119,7 @@
   <div class="card">
     <div><span class="q-no">2</span><span class="q-title">「海上召靈」的報名，是用現有的海洋宗教文化活動報名系統嗎？</span></div>
     <div class="q-why">如果是，電腦可以自動把「已填表／已匯款／已核實」的人數抓進晨會，修士就不用再手動報一次、也不會重複算。</div>
-    <div class="opts">
+    <div class="opts" data-q="海上召靈報名系統">
       <div class="opt reco"><span class="box"></span>是，就是那個報名系統<span class="tagr">建議</span></div>
       <div class="opt"><span class="box"></span>不是，用別的方式收名單（請說明）</div>
     </div>
@@ -104,10 +128,19 @@
   <div class="card">
     <div><span class="q-no">3</span><span class="q-title">「昨日各院收入」要不要也放進這套晨會系統？</span></div>
     <div class="q-why">收入本來就有流水帳在記。放進工作日誌會變複雜、也容易歸錯院。</div>
-    <div class="opts">
+    <div class="opts" data-q="昨日各院收入">
       <div class="opt reco"><span class="box"></span>不放，晨會頁只放流水帳連結就好<span class="tagr">建議</span></div>
       <div class="opt"><span class="box"></span>要放，各院每天在系統報一筆收入</div>
     </div>
+  </div>
+
+  <div class="sec-title">您圈選的結果</div>
+  <div class="card result">
+    <div class="rrow"><b>第 1 題</b>　500 位算法：<span id="r1" class="rpick">尚未選</span></div>
+    <div class="rrow"><b>第 2 題</b>　海上召靈報名系統：<span id="r2" class="rpick">尚未選</span></div>
+    <div class="rrow"><b>第 3 題</b>　昨日各院收入：<span id="r3" class="rpick">尚未選</span></div>
+    <button class="copybtn" id="copyBtn">📋 複製結果，傳回承辦</button>
+    <div class="rhint">按一下會複製好文字，貼到 LINE 傳給承辦即可；或直接截圖這一格。</div>
   </div>
 
   <div class="mock-title">做好以後，晨會長這樣（示意）</div>
@@ -134,5 +167,64 @@
   </div>
 
 </div>
+
+<div class="toast" id="toast">✅ 已複製，貼到 LINE 傳回即可</div>
+
+<script>
+  // 每一題（.opts）內的選項：點一下＝選它、同題其他取消（像單選題）
+  var groups = document.querySelectorAll('.opts');
+  function optText(opt){
+    var c = opt.cloneNode(true);
+    var b = c.querySelector('.box'); if (b) b.remove();
+    var t = c.querySelector('.tagr'); if (t) t.remove();
+    return (c.textContent || '').trim();
+  }
+  groups.forEach(function(g){
+    g.querySelectorAll('.opt').forEach(function(opt){
+      opt.addEventListener('click', function(){
+        g.querySelectorAll('.opt').forEach(function(o){
+          o.classList.remove('sel');
+          o.querySelector('.box').textContent = '';
+        });
+        opt.classList.add('sel');
+        opt.querySelector('.box').textContent = '✓';
+        update();
+      });
+    });
+  });
+
+  function pick(i){
+    var g = groups[i];
+    var sel = g.querySelector('.opt.sel');
+    return sel ? optText(sel) : '';
+  }
+  function update(){
+    [1,2,3].forEach(function(n){
+      var v = pick(n-1);
+      var el = document.getElementById('r'+n);
+      el.textContent = v || '尚未選';
+      el.classList.toggle('done', !!v);
+    });
+  }
+
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var txt = '【晨會決策單・長官圈選】\n'
+      + '1. 500 位算法：' + (pick(0) || '（未選）') + '\n'
+      + '2. 海上召靈報名系統：' + (pick(1) || '（未選）') + '\n'
+      + '3. 昨日各院收入：' + (pick(2) || '（未選）');
+    var toast = document.getElementById('toast');
+    function ok(){ toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2200); }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(ok, function(){ fallback(txt); ok(); });
+    } else { fallback(txt); ok(); }
+  });
+  function fallback(txt){
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); } catch(e){}
+    document.body.removeChild(ta);
+  }
+</script>
 </body>
 </html>
