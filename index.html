@@ -67,8 +67,10 @@
   .toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%);
     background:#1f7a1f; color:#fff; padding:10px 20px; border-radius:24px;
     font-size:15px; box-shadow:0 4px 14px rgba(0,0,0,.25); opacity:0;
-    transition:opacity .25s; pointer-events:none; z-index:50; }
+    transition:opacity .25s; pointer-events:none; z-index:50; max-width:90%; text-align:center; }
   .toast.show { opacity:1; }
+  .toast.err { background:#b61e1e; }
+  .copybtn:disabled { background:#999; cursor:default; }
 
   .mock-title { font-size:19px; font-weight:bold; color:#1f5c8a;
     margin:30px 0 8px; padding-left:12px; border-left:5px solid #1f5c8a; }
@@ -103,7 +105,7 @@
   </div>
 
   <div class="sec-title">請長官圈選這三題</div>
-  <div class="note">直接用手指點選項即可（點一下就打勾，同一題只能選一個，點別的會改過去）。圈好後，拉到最下面按「複製結果」傳給韋銘。</div>
+  <div class="note">直接用手指點選項即可（點一下就打勾，同一題只能選一個，點別的會改過去）。三題圈好後，拉到最下面按「送出給韋銘」就會直接傳出去。</div>
 
   <div class="card">
     <div><span class="q-no">1</span><span class="q-title">月底「500 位」要以哪一種人算？</span></div>
@@ -139,8 +141,8 @@
     <div class="rrow"><b>第 1 題</b>　500 位算法：<span id="r1" class="rpick">尚未選</span></div>
     <div class="rrow"><b>第 2 題</b>　海上召靈報名系統：<span id="r2" class="rpick">尚未選</span></div>
     <div class="rrow"><b>第 3 題</b>　昨日各院收入：<span id="r3" class="rpick">尚未選</span></div>
-    <button class="copybtn" id="copyBtn">📋 複製結果，傳給韋銘</button>
-    <div class="rhint">按一下會複製好文字，貼到 LINE 傳給韋銘即可；或直接截圖這一格。</div>
+    <button class="copybtn" id="sendBtn">✅ 送出給韋銘</button>
+    <div class="rhint">按一下會直接把您的圈選傳給韋銘，不用再截圖或複製。</div>
   </div>
 
   <div class="mock-title">做好以後，晨會長這樣（示意）</div>
@@ -168,7 +170,7 @@
 
 </div>
 
-<div class="toast" id="toast">✅ 已複製，貼到 LINE 傳回即可</div>
+<div class="toast" id="toast"></div>
 
 <script>
   // 每一題（.opts）內的選項：點一下＝選它、同題其他取消（像單選題）
@@ -207,24 +209,37 @@
     });
   }
 
-  document.getElementById('copyBtn').addEventListener('click', function(){
-    var txt = '【晨會決策單・長官圈選】\n'
-      + '1. 500 位算法：' + (pick(0) || '（未選）') + '\n'
-      + '2. 海上召靈報名系統：' + (pick(1) || '（未選）') + '\n'
-      + '3. 昨日各院收入：' + (pick(2) || '（未選）');
-    var toast = document.getElementById('toast');
-    function ok(){ toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2200); }
-    if (navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(txt).then(ok, function(){ fallback(txt); ok(); });
-    } else { fallback(txt); ok(); }
-  });
-  function fallback(txt){
-    var ta = document.createElement('textarea');
-    ta.value = txt; ta.style.position='fixed'; ta.style.opacity='0';
-    document.body.appendChild(ta); ta.focus(); ta.select();
-    try { document.execCommand('copy'); } catch(e){}
-    document.body.removeChild(ta);
+  var WEBHOOK = 'https://zero-n8n.duckdns.org/webhook/morning-decision';
+  var toast = document.getElementById('toast');
+  function showToast(msg, isErr){
+    toast.textContent = msg;
+    toast.classList.toggle('err', !!isErr);
+    toast.classList.add('show');
+    setTimeout(function(){ toast.classList.remove('show'); }, 2600);
   }
+
+  var btn = document.getElementById('sendBtn');
+  btn.addEventListener('click', function(){
+    var payload = { q1: pick(0), q2: pick(1), q3: pick(2) };
+    if (!payload.q1 && !payload.q2 && !payload.q3){
+      showToast('請先圈選至少一題再送出', true);
+      return;
+    }
+    var old = btn.textContent;
+    btn.disabled = true; btn.textContent = '送出中…';
+    fetch(WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      if (!r.ok) throw new Error(r.status);
+      showToast('✅ 已送出給韋銘，感謝長官！', false);
+      btn.textContent = '✅ 已送出';
+    }).catch(function(){
+      showToast('送出失敗，請改用截圖傳給韋銘', true);
+      btn.disabled = false; btn.textContent = old;
+    });
+  });
 </script>
 </body>
 </html>
